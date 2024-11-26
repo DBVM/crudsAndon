@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+//use App\Http\Requests\RegisterUserRequest;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -21,33 +22,34 @@ class UserController extends Controller
     {
         return view('users.create');
     }
-    public function store()
+    public function authorize()
     {
+        return true;
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'max:50'],
+            'lastname' => ['required', 'max:50'],
+            'email' => ['required', 'email', 'regex:/(.+)@(.+)\.com$/i', 'unique:users'],
+            'password' => ['required', 'confirmed', Password::min(8)],
+                /*->letters()*/
+        ]);
         try {
-            $user = User::create([
-                'name' => request()->name,
-                'lastname' => request()->lastname,
-                'email' => request()->email,
-                'password' => Hash::make(request()->password),
-            ]);
-
-            //$user = User::create(request()->all());
-
+            $user = User::create($validated);
+    
             return redirect()
                 ->route('users')
-                ->withSuccess("Your new user with email {$user->email} has already stored.");
+                ->withSuccess("The user with email: {$user->email} has been successfully registered.");
+    
         } catch (\Exception $e) {
-            return redirect()
-                ->route('users')
-                ->with('error', 'Error al eliminar el usuario');
+           return back()
+                ->withInput()
+                ->withError('There was an error registering user.' . $e->getMessage());
         }
     }
-    public function show($id)
-    {
-        return view('users.show')->with([
-            'user' => User::findOrFail($id),
-        ]);
-    }
+   
     public function edit($id)
     {
         return view('users.edit')->with([
@@ -68,9 +70,10 @@ class UserController extends Controller
         try {
             $user = User::findOrFail($id);
             $user->delete();
-            return redirect()
-                ->route('users')
-                ->withSuccess("The user with email {$user->email} has been deleted.");
+            return response()->json([
+                'success' => true
+            ], 200);
+               
         } catch (\Exception $e) {
             return redirect()
                 ->route('users')
