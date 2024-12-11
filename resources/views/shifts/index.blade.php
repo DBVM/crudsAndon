@@ -1,1 +1,2 @@
-<h1>Hello from index shift</h1>
+@extends('layouts.navigation')
+<h1>Hello from shift index</h1>
