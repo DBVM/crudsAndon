@@ -79,7 +79,7 @@
                             <td class="px-6 py-2 "> {{ $shift->end_time }} </td>
 
                             <td class="px-2 py-2 ">
-                                <a href="{#"
+                                <a href="{{ route('shifts.edit', ['id' => $shift->id]) }}"
                                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
                                     Edit
                                 </a>
@@ -88,7 +88,7 @@
 
                                 <button type="submit"
                                     class="bg-white hover:bg-red-500 text-black hover:text-white font-bold py-2 px-4 rounded-full"
-                                    onclick="#">
+                                    onclick="confirmDelete({{ $shift->id }}, '{{ $shift->name }}')">
                                     Delete
                                 </button>
 
@@ -102,4 +102,5 @@
         </div>
     </div>
 </x-app-layout>
+@vite('resources/js/shift.js')
 

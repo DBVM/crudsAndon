@@ -41,27 +41,42 @@ class ShiftController extends Controller
                 'end_time' => $request->end_time
             ]);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Shift created successfully',
-                'shift' => $shift
-            ]);
+            return redirect()
+            ->route('shifts')
+            ->withSuccess("The user with email: {$shift->email} has been successfully registered.");
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Error creating shift: ' . $e->getMessage()
-            ], 500);
+            return back()
+                ->withInput()
+                ->withError('There was an error registering user.' . $e->getMessage());
         }
     }
 
     
-    public function edit(){
-
+    public function edit($id){
+        return view('shifts.edit')->with([
+            'shift' => Shift::findOrFail($id),
+        ]);
     }
-    public function update(){
+    public function update($id){
+        $shift = Shift::findOrFail($id);
 
+        $shift->update(request()->all());
+        return redirect()
+            ->route('shifts')
+            ->withSuccess("The shift: {$shift->email} has been updated.");
     }
-    public function destroy(){
-
+    public function destroy($id){
+        try {
+            $shift = Shift::findOrFail($id);
+            $shift->delete();
+            return response()->json([
+                'success' => true
+            ], 200);
+               
+        } catch (\Exception $e) {
+            return redirect()
+                ->route('shifts')
+                ->with('error', 'Error deleting shift');
+        }
     }
 }

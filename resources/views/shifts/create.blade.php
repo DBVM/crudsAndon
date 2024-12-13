@@ -1,7 +1,7 @@
 @extends('layouts.navigation')
 
 <x-app-layout>
-    <div class="w-fll bg-gray-100 flex items-center justify-center p-4">
+    <div class="w-3/5 bg-gray-100 flex items-center justify-center p-4">
         <form class="w-4/5 bg-white rounded-lg shadow-md p-8" id="shiftRegistrationForm">
             @csrf
             <!-- Título del formulario -->
@@ -49,8 +49,12 @@
                 </button>
             </div>
         </form>
+
+        
     </div>
     </div>
+
+
 
 </x-app-layout>
 @section('js')
@@ -58,4 +62,3 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
 @endsection
-@vite('resources/js/shift.js')
