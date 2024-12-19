@@ -1,58 +1,5 @@
 @extends('layouts.navigation')
 <x-app-layout>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        function confirmDelete(id, userName) {
-            Swal.fire({
-                title: 'Are you sure?',
-                html: `You want to remove the user <strong>${userName}</strong>? All the information will be destroyed.`,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#EF4444',
-                cancelButtonColor: '#6B7280',
-                confirmButtonText: 'Yes',
-                cancelButtonText: 'Cancel',
-                reverseButtons: true
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Realizar la petición DELETE
-                    fetch(`/users/${id}`, {
-                            method: 'DELETE',
-                            headers: {
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                            }
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                // Mostrar mensaje de éxito
-                                Swal.fire(
-                                    'Deleted',
-                                    'The user has been deleted.',
-                                    'success'
-                                ).then(() => {
-                                    // Recargar la página
-                                    window.location.reload();
-                                });
-                            } else {
-                                throw new Error('Error deleting user');
-                            }
-                        })
-                        .catch(error => {
-                            // Mostrar mensaje de error
-                            Swal.fire(
-                                'Error',
-                                'There was an error deleting user.',
-                                'error'
-                            );
-                        });
-                }
-            });
-        }
-    </script>
-
-   
-
     <div class="flex items-center justify-center mt-3">
         <a href="{{ route('users.create') }}"
             class=" flex px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm transition-colors duration-200">
@@ -102,4 +49,7 @@
         </div>
     </div>
 </x-app-layout>
-
+@section('js')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ asset('js/user.js') }}"></script>
+@endsection

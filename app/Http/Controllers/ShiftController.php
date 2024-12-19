@@ -21,8 +21,8 @@ class ShiftController extends Controller
          // Validación de datos
          $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'start_time' => 'required|date_format:H:i',
-            'end_time' => 'required|date_format:H:i|after:start_time'
+            'start_time' => 'required',
+            'end_time' => 'required'
         ]);
 
         // Si la validación falla
@@ -47,7 +47,7 @@ class ShiftController extends Controller
         } catch (\Exception $e) {
             return back()
                 ->withInput()
-                ->withError('There was an error registering user.' . $e->getMessage());
+                ->withError('There was an error registering shift.' . $e->getMessage());
         }
     }
 
