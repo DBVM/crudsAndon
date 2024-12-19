@@ -124,8 +124,10 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
    
     <div class="container-fluid">
+        @yield('css')
         @yield('content')
         @extends('layouts.session_messages')
         @yield('js')
+      
     </div>
 </body>

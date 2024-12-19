@@ -24,7 +24,7 @@
                 <label for="start_time" class="block text-gray-700 text-sm font-bold mb-2">
                     Start time
                 </label>
-                <input type="time" id="start_time" name="start_time"
+                <input type="time" step="1" min="09:00" max="18:00"  id="start_time" name="start_time"
                     class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     value="{{ $shift->start_time }}">
             </div>
@@ -34,7 +34,7 @@
                 <label for="end_time" class="block text-gray-700 text-sm font-bold mb-2">
                     End time
                 </label>
-                <input type="time" id="end_time" name="end_time"
+                <input type="time" step="1" min="09:00" max="18:00" id="end_time" name="end_time"
                     class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     value="{{ $shift->end_time }}">
             </div>

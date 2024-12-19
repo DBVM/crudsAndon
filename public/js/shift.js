@@ -55,4 +55,5 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const defaultTime = '00:00:00'; 
     timeInputStart.value =defaultTime;
     timeInputEnd.value=defaultTime;
+    
 });

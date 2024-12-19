@@ -32,7 +32,14 @@ class ShiftController extends Controller
                 'errors' => $validator->errors()
             ], 422);
         }
+        $conflictingEvents = Shift::where(function ($query) use ($request) {
+             $query->where('start_time', '<', $request->end_time) ->where('end_time', '>', $request->start_time); })->exists(); 
 
+
+        if ($conflictingEvents) {
+             return back()->withErrors(['error' => 'The event overlaps with an existing event.']); 
+            }
+        
         // Crear nuevo turno
         try {
             $shift = Shift::create([
@@ -41,9 +48,10 @@ class ShiftController extends Controller
                 'end_time' => $request->end_time
             ]);
 
+
             return redirect()
             ->route('shifts')
-            ->withSuccess("The user with email: {$shift->email} has been successfully registered.");
+            ->withSuccess("The shift with name: {$shift->name} has been registered successfully .");
         } catch (\Exception $e) {
             return back()
                 ->withInput()
